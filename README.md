@@ -1,3 +1,16 @@
+# Github API Test
+
+### What am I?
+
+このアプリはテストの為です。普通に使うものではありません。
+
+### Installation
+
+1. npm i
+2. http://localhost:3000にブラウザーで飛ばす
+3. 🐶Enjoy.🐶
+
+
 # React Redux Starter Kit
 
 [![Build Status](https://travis-ci.org/davezuko/react-redux-starter-kit.svg?branch=master)](https://travis-ci.org/davezuko/react-redux-starter-kit?branch=master)
