@@ -4,6 +4,8 @@ import URL from 'url-parse'
 import RepoLinks from '../../../components/RepoLinks'
 import Loader from '../../../components/Loader'
 import IssueListItem from './IssueListItem'
+import PaginationBar from './PaginationBar'
+import { Container, Row, Col } from 'reactstrap'
 import { SETTINGS as settings, REPOS as repos } from '../../../config.js'
 
 class Issues extends Component {
@@ -24,7 +26,7 @@ class Issues extends Component {
     if (currentRepo !== {}) {
       // Set state for endpoint
       const endpoint = new URL(`${settings.apiBase}/repos/${currentRepo.url}/issues`, true)
-      endpoint.query['page']     = this.props.location.query.page
+      endpoint.query['page'] = this.props.location.query.page
       endpoint.query['per_page'] = 10
       setEndpoint(endpoint)
       // Use endpoint to get data from GithubAPI
@@ -65,12 +67,37 @@ class Issues extends Component {
       } else {
         return (
           <div>
-            <h3>{repo.name}</h3>
-            <button className='btn btn-default' onClick={changePage}>Press Me</button>
-            <p>{page}</p>
-            <ul id='issues-list' className='list-group text-left'>
-              {data.map((issue, i) => <IssueListItem key={'Issue-' + i} pathname={location.pathname} issue={issue} />)}
-            </ul>
+            <Container>
+              <Row>
+                <Col><h3>{repo.name}</h3></Col>
+              </Row>
+              <Row>
+                <Col>
+                  <button className='btn btn-default' onClick={changePage}>Press Me</button>
+                  <p>{page}</p>
+                </Col>
+              </Row>
+              <Row>
+                <Col><PaginationBar /></Col>
+              </Row>
+              <Row>
+                <Col>
+                  <ul id='issues-list' className='list-group text-left'>
+                    {data.map((issue, i) => (
+                      <IssueListItem key={'Issue-' + i}
+                        pathname={location.pathname}
+                        issue={issue}
+                      />
+                    ))}
+                  </ul>
+                </Col>
+              </Row>
+              <Row>
+                <Col>
+                  <PaginationBar />
+                </Col>
+              </Row>
+            </Container>
           </div>
         )
       }
