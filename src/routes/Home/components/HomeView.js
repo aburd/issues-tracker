@@ -1,6 +1,5 @@
 import React from 'react'
 import RepoLinks from '../../../components/RepoLinks'
-import DuckImage from '../assets/Duck.jpg'
 import './HomeView.scss'
 
 export const HomeView = () => (

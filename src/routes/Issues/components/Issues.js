@@ -15,8 +15,9 @@ class Issues extends Component {
 
   componentWillMount () {
     const currentRepo = repos[this.props.params.name]
+    this.props.setRepo(currentRepo)
 
-    if (currentRepo) {
+    if (currentRepo !== {}) {
       const endpoint = new URL(`${settings.apiBase}/repos/${currentRepo.url}/issues?page=1&per_page=10`)
       this.props.getInitialIssues(endpoint.href)
     }
@@ -24,17 +25,6 @@ class Issues extends Component {
 
   componentWillUnmount () {
     this.props.issuesClear()
-  }
-
-  componentWillReceiveProps (newProps, props) {
-    const currentRepo = repos[newProps.params.name]
-    const { params, getInitialIssues } = this.props
-
-    // TODO: use immutable for deep object equality
-    if (currentRepo && params.name !== newProps.params.name) {
-      const endpoint = new URL(`${settings.apiBase}/repos/${currentRepo.url}/issues?page=1&per_page=10`)
-      getInitialIssues(endpoint.href)
-    }
   }
 
   makeDefaultView () {
@@ -51,20 +41,19 @@ class Issues extends Component {
   render () {
     const {
       loading,
-      params,
+      repo,
       location,
       changePage,
       page,
       data
     } = this.props
-    const currentRepo = repos[params.name]
     const renderIssues = () => {
       if (loading) {
         return <Loader />
       } else {
         return (
           <div>
-            <h3>{currentRepo.name}</h3>
+            <h3>{repo.name}</h3>
             <button className='btn btn-default' onClick={changePage}>Press Me</button>
             <p>{page}</p>
             <ul id='issues-list' className='list-group text-left'>
@@ -75,8 +64,8 @@ class Issues extends Component {
       }
     }
 
-    // Only load the component if the currentRepo is valid, else load a default view
-    return !currentRepo ? (
+    // Only load the component if the repo is valid, else load a default view
+    return !repo ? (
       <div>
         {this.makeDefaultView()}
       </div>
@@ -90,10 +79,12 @@ class Issues extends Component {
 
 Issues.propTypes = {
   loading: PropTypes.bool,
+  repo: PropTypes.object,
   location: PropTypes.object,
   page: PropTypes.number,
   params: PropTypes.object,
   changePage: PropTypes.func,
+  setRepo: PropTypes.func,
   getInitialIssues: PropTypes.func,
   issuesClear: PropTypes.func,
   data: PropTypes.array
