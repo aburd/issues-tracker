@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
-import { changePage, getInitialIssues, issuesClear, setRepo } from '../modules/issues'
+import { changePage, getInitialIssues, issuesClear, setRepo, setEndpoint } from '../modules/issues'
 
 /*  This is a container component. Notice it does not contain any JSX,
     nor does it import React. This component is **only** responsible for
@@ -17,6 +17,7 @@ const mapDispatchToProps = {
     return changePage(1)
   },
   setRepo : (repo) => setRepo(repo),
+  setEndpoint : (endpoint) => setEndpoint(endpoint),
   getInitialIssues : (url) => getInitialIssues(url),
   issuesClear : () => issuesClear()
 }
@@ -25,7 +26,8 @@ const mapStateToProps = (state) => ({
   loading : state.issues.loading,
   page    : state.issues.page,
   data    : state.issues.data,
-  repo    : state.issues.repo
+  repo    : state.issues.repo,
+  endpoint: state.issues.endpoint
 })
 
 /*  Note: mapStateToProps is where you should use `reselect` to create selectors, ie:

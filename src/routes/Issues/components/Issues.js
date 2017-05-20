@@ -14,12 +14,21 @@ class Issues extends Component {
   }
 
   componentWillMount () {
+    /*
+      Get and Set Initial data for any future usage in the component
+    */
+    const { setRepo, getInitialIssues, setEndpoint } = this.props
     const currentRepo = repos[this.props.params.name]
-    this.props.setRepo(currentRepo)
+    setRepo(currentRepo)
 
     if (currentRepo !== {}) {
-      const endpoint = new URL(`${settings.apiBase}/repos/${currentRepo.url}/issues?page=1&per_page=10`)
-      this.props.getInitialIssues(endpoint.href)
+      // Set state for endpoint
+      const endpoint = new URL(`${settings.apiBase}/repos/${currentRepo.url}/issues`, true)
+      endpoint.query['page']     = this.props.location.query.page
+      endpoint.query['per_page'] = 10
+      setEndpoint(endpoint)
+      // Use endpoint to get data from GithubAPI
+      getInitialIssues(endpoint.toString())
     }
   }
 
@@ -28,6 +37,9 @@ class Issues extends Component {
   }
 
   makeDefaultView () {
+    /*
+      View to show in case an incorrect repo name is used in the URL
+    */
     return (
       <div>
         <h3>Not Found :(</h3>
@@ -85,6 +97,7 @@ Issues.propTypes = {
   params: PropTypes.object,
   changePage: PropTypes.func,
   setRepo: PropTypes.func,
+  setEndpoint: PropTypes.func,
   getInitialIssues: PropTypes.func,
   issuesClear: PropTypes.func,
   data: PropTypes.array
