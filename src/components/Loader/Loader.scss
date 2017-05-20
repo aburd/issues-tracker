@@ -1,0 +1,41 @@
+/*
+  shamelessly ripped from http://codepen.io/roppazvan/
+  Please checkout his codepen
+*/
+
+$blue: #0B4C5F;
+#loader {
+  width: 300px;
+  margin: auto;
+  padding: 2rem 0;
+  text-align: center;
+  & span {
+    display: inline-block;
+    height: 14px;
+    width: 3px;
+    margin: 3px;
+    background-color: $blue;
+    animation-name: loader;
+    animation-iteration-count: infinite;
+    animation-duration: 1s;
+    animation-fill-mode: ease-in-out;
+    @for $i from 1 through 8 {
+      &:nth-child(#{$i}) {
+        animation-delay: 50ms*$i;
+      }
+    }
+  }
+}
+
+@keyframes loader {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(2.2);
+    background-color: red;
+  }
+  100% {
+    transform: scale(1);
+  }
+}
