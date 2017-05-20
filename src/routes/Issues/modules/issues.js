@@ -3,6 +3,7 @@ import Request from 'superagent'
 // ------------------------------------
 // Constants
 // ------------------------------------
+export const SET_LOADING = 'SET_LOADING'
 export const ISSUES_SET = 'ISSUES_SET'
 export const ISSUES_CHANGE_PAGE = 'ISSUES_CHANGE_PAGE'
 export const ISSUES_CLEAR = 'ISSUES_CLEAR'
@@ -27,19 +28,25 @@ export function issuesClear () {
     returns a function for lazy evaluation. It is incredibly useful for
     creating async actions, especially when combined with redux-thunk! */
 
-export const getInitialIssues = () => {
-  const url = 'https://api.github.com/repos/angular/protractor/issues?page=1&per_page=10'
+export const getInitialIssues = (url) => {
   return (dispatch, getState) => {
-    return Request.get(url)
+    dispatch({
+      type : SET_LOADING,
+      payload : true
+    })
+    return Request
+      .get(url)
       .end((err, res) => {
         if (err) {
-          // TODO: write a dispatch for error handling
-          console.log(err)
-        }
-        if (res.statusCode === 200) {
+          throw new Error('An error occured loading the REST API:', err)
+        } else {
           dispatch({
             type    : 'ISSUES_SET',
             payload : res.body
+          })
+          dispatch({
+            type : SET_LOADING,
+            payload : false
           })
         }
       })
@@ -55,6 +62,11 @@ export const actions = {
 // Action Handlers
 // ------------------------------------
 const ACTION_HANDLERS = {
+  [SET_LOADING] : (state, action) => {
+    return Object.assign({}, state, {
+      loading: action.payload
+    })
+  },
   [ISSUES_CHANGE_PAGE] : (state, action) => {
     return Object.assign({}, state, {
       page: action.payload
@@ -76,6 +88,7 @@ const ACTION_HANDLERS = {
 // Reducer
 // ------------------------------------
 const initialState = {
+  loading: false,
   page: 0,
   data: []
 }

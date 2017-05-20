@@ -13,18 +13,17 @@ import Issues from '../components/Issues'
     implementing our wrapper around increment; the component doesn't care   */
 
 const mapDispatchToProps = {
-  changePage : (something, somethingElse) => {
-    console.log(something.currentTarget)
-    console.log(somethingElse)
+  changePage : (ev) => {
     return changePage(1)
   },
-  getInitialIssues : () => getInitialIssues(),
+  getInitialIssues : (url) => getInitialIssues(url),
   issuesClear : () => issuesClear()
 }
 
 const mapStateToProps = (state) => ({
-  page : state.issues.page,
-  data : state.issues.data
+  loading : state.issues.loading,
+  page    : state.issues.page,
+  data    : state.issues.data
 })
 
 /*  Note: mapStateToProps is where you should use `reselect` to create selectors, ie:
