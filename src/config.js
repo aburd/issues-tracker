@@ -10,5 +10,13 @@ export const REPOS = {
   'react-redux-starter-kit': {
     url: 'davezuko/react-redux-starter-kit',
     name: 'React-Redux-Starter-Kit'
+  },
+  'brave' : {
+    url: 'brave/browser-laptop',
+    name: 'Brave Browser'
+  },
+  'atom': {
+    url: 'atom/atom',
+    name: 'Atom'
   }
 }
