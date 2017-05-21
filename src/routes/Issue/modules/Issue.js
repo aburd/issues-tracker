@@ -4,23 +4,32 @@ import Request from 'superagent'
 // Constants
 // ------------------------------------
 export const SET_LOADING = 'SET_LOADING'
-export const ISSUES_SET = 'ISSUES_SET'
+export const SET_REPO = 'SET_REPO'
+export const SET_ENDPOINT = 'SET_ENDPOINT'
+export const ISSUE_SET = 'ISSUE_SET'
 export const ISSUES_CHANGE_PAGE = 'ISSUES_CHANGE_PAGE'
-export const ISSUES_CLEAR = 'ISSUES_CLEAR'
+export const ISSUE_CLEAR = 'ISSUE_CLEAR'
 
 // ------------------------------------
 // Actions
 // ------------------------------------
-export function changePage (value = 1) {
+export function setRepo (value) {
   return {
-    type    : ISSUES_CHANGE_PAGE,
+    type    : SET_REPO,
     payload : value
   }
 }
 
-export function issuesClear () {
+export function setEndpoint (value) {
   return {
-    type : ISSUES_CLEAR
+    type    : SET_ENDPOINT,
+    payload : value
+  }
+}
+
+export function issueClear () {
+  return {
+    type : ISSUE_CLEAR
   }
 }
 
@@ -28,7 +37,7 @@ export function issuesClear () {
     returns a function for lazy evaluation. It is incredibly useful for
     creating async actions, especially when combined with redux-thunk! */
 
-export const getInitialIssues = (url) => {
+export const getIssue = (url) => {
   return (dispatch, getState) => {
     dispatch({
       type : SET_LOADING,
@@ -40,8 +49,9 @@ export const getInitialIssues = (url) => {
         if (err) {
           throw new Error('An error occured loading the REST API:', err)
         } else {
+          console.log('res', res)
           dispatch({
-            type    : 'ISSUES_SET',
+            type    : 'ISSUE_SET',
             payload : res.body
           })
           dispatch({
@@ -54,8 +64,8 @@ export const getInitialIssues = (url) => {
 }
 
 export const actions = {
-  changePage,
-  getInitialIssues
+  getIssue,
+  issueClear
 }
 
 // ------------------------------------
@@ -67,17 +77,22 @@ const ACTION_HANDLERS = {
       loading: action.payload
     })
   },
-  [ISSUES_CHANGE_PAGE] : (state, action) => {
+  [SET_REPO] : (state, action) => {
     return Object.assign({}, state, {
-      page: action.payload
+      repo: action.payload
     })
   },
-  [ISSUES_SET] : (state, action) => {
+  [SET_ENDPOINT] : (state, action) => {
+    return Object.assign({}, state, {
+      endpoint: action.payload
+    })
+  },
+  [ISSUE_SET] : (state, action) => {
     return Object.assign({}, state, {
       data: action.payload
     })
   },
-  [ISSUES_CLEAR] : (state, action) => {
+  [ISSUE_CLEAR] : (state, action) => {
     return Object.assign({}, state, {
       data: []
     })
@@ -89,8 +104,9 @@ const ACTION_HANDLERS = {
 // ------------------------------------
 const initialState = {
   loading: false,
-  page: 0,
-  data: []
+  repo: {},
+  endpoint: {},
+  data: {}
 }
 export default function issuesReducer (state = initialState, action) {
   const handler = ACTION_HANDLERS[action.type]

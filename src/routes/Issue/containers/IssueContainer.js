@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
-import { changePage, getInitialIssue, issueClear } from '../modules/issue'
+import { setRepo, setEndpoint, getIssue, issueClear } from '../modules/issue'
 
 /*  This is a container component. Notice it does not contain any JSX,
     nor does it import React. This component is **only** responsible for
@@ -13,17 +13,18 @@ import Issue from '../components/Issue'
     implementing our wrapper around increment; the component doesn't care   */
 
 const mapDispatchToProps = {
-  changePage : (ev) => {
-    return changePage(1)
-  },
-  getInitialIssue : (url) => getInitialIssue(url),
-  issueClear : () => issueClear()
+  setRepo         : (repo) => setRepo(repo),
+  setEndpoint     : (endpoint) => setEndpoint(endpoint),
+  getIssue        : (url) => getIssue(url),
+  issueClear      : () => issueClear()
 }
 
 const mapStateToProps = (state) => ({
-  loading : state.issue.loading,
-  page    : state.issue.page,
-  data    : state.issue.data
+  loading       : state.issue.loading,
+  data          : state.issue.data,
+  repo            : state.issue.repo,
+  endpoint        : state.issue.endpoint
+  // issuesEndpoint: state.issues ? state.issues.endpoint : {}
 })
 
 /*  Note: mapStateToProps is where you should use `reselect` to create selectors, ie:

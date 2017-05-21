@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import URL from 'url-parse'
-import RepoLinks from '../../../components/RepoLinks'
 import Loader from '../../../components/Loader'
 import IssueListItem from './IssueListItem'
 import PaginationBar from './PaginationBar'
@@ -11,6 +10,7 @@ import { SETTINGS as settings, REPOS as repos } from '../../../config.js'
 class Issues extends Component {
   constructor (props) {
     super(props)
+
     this.state = {}
   }
 
@@ -20,7 +20,7 @@ class Issues extends Component {
     */
     const { setRepo, getIssues, setEndpoint, location } = this.props
     const currentRepo = repos[this.props.params.name]
-    console.log(currentRepo)
+
     if (currentRepo !== {} && currentRepo !== undefined) {
       setRepo(currentRepo)
       // Set state for endpoint
@@ -45,14 +45,18 @@ class Issues extends Component {
   }
 
   render () {
-    console.log('Render called@!')
+    console.log('render called')
     const {
       loading,
       repo,
       location,
       data,
-      paginationLinks
+      setEndpoint,
+      paginationLinks,
+      setCurrentIssue
     } = this.props
+    console.log('loading', loading)
+
     const renderIssues = () => {
       if (loading) {
         return <Loader />
@@ -67,16 +71,23 @@ class Issues extends Component {
               </Row>
               <Row>
                 <Col>
-                  <PaginationBar currentPage={currentPage} {...this.props} />
+                  <PaginationBar
+                    currentPage={currentPage}
+                    location={location}
+                    setEndpoint={setEndpoint}
+                    paginationLinks={paginationLinks}
+                  />
                 </Col>
               </Row>
               <Row>
                 <Col>
                   <ul id='issues-list' className='list-group text-left'>
                     {data.map((issue, i) => (
-                      <IssueListItem key={'Issue-' + i}
+                      <IssueListItem
+                        key={'Issue-' + i}
                         pathname={location.pathname}
                         issue={issue}
+                        setCurrentIssue={setCurrentIssue}
                       />
                     ))}
                   </ul>
@@ -84,7 +95,12 @@ class Issues extends Component {
               </Row>
               <Row>
                 <Col>
-                  pagination bar coming soon...
+                  <PaginationBar
+                    currentPage={currentPage}
+                    location={location}
+                    setEndpoint={setEndpoint}
+                    paginationLinks={paginationLinks}
+                  />
                 </Col>
               </Row>
             </Container>
@@ -93,7 +109,6 @@ class Issues extends Component {
       }
     }
 
-    // Only load the component if the repo is valid, else load a default view
     return (
       <div>
         {renderIssues()}
@@ -107,9 +122,10 @@ Issues.propTypes = {
   repo: PropTypes.object,
   location: PropTypes.object,
   params: PropTypes.object,
-  endpoint: PropTypes.object,
+  paginationLinks: PropTypes.object,
   setRepo: PropTypes.func,
   setEndpoint: PropTypes.func,
+  setCurrentIssue: PropTypes.func,
   getIssues: PropTypes.func,
   issuesClear: PropTypes.func,
   data: PropTypes.array

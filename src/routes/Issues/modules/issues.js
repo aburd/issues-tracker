@@ -6,6 +6,7 @@ import Request from 'superagent'
 export const SET_LOADING = 'SET_LOADING'
 export const SET_REPO = 'SET_REPO'
 export const SET_ENDPOINT = 'SET_ENDPOINT'
+export const SET_CURRENT_ISSUE = 'SET_CURRENT_ISSUE'
 export const ISSUES_SET = 'ISSUES_SET'
 export const ISSUES_CHANGE_PAGE = 'ISSUES_CHANGE_PAGE'
 export const ISSUES_CLEAR = 'ISSUES_CLEAR'
@@ -23,6 +24,13 @@ export function setRepo (value) {
 export function setEndpoint (value) {
   return {
     type    : SET_ENDPOINT,
+    payload : value
+  }
+}
+
+export function setCurrentIssue (value) {
+  return {
+    type    : SET_CURRENT_ISSUE,
     payload : value
   }
 }
@@ -67,7 +75,8 @@ export const getIssues = (url) => {
 export const actions = {
   setRepo,
   setEndpoint,
-  getIssues
+  getIssues,
+  setCurrentIssue
 }
 
 // ------------------------------------
@@ -89,6 +98,11 @@ const ACTION_HANDLERS = {
       endpoint: action.payload
     })
   },
+  [SET_CURRENT_ISSUE] : (state, action) => {
+    return Object.assign({}, state, {
+      currentIssue: action.payload
+    })
+  },
   [ISSUES_SET] : (state, action) => {
     return Object.assign({}, state, {
       data: action.payload,
@@ -108,9 +122,10 @@ const ACTION_HANDLERS = {
 const initialState = {
   loading: false,
   data: [],
-  paginationLinks: [],
+  paginationLinks: {},
   repo: {},
-  endpoint: {}
+  endpoint: {},
+  currentIssue: 0
 }
 export default function issuesReducer (state = initialState, action) {
   const handler = ACTION_HANDLERS[action.type]

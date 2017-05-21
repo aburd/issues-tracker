@@ -1,5 +1,11 @@
 import { connect } from 'react-redux'
-import { changePage, getIssues, issuesClear, setRepo, setEndpoint } from '../modules/issues'
+import {
+  getIssues,
+  issuesClear,
+  setRepo,
+  setEndpoint,
+  setCurrentIssue
+} from '../modules/issues'
 
 /*  This is a container component. Notice it does not contain any JSX,
     nor does it import React. This component is **only** responsible for
@@ -13,13 +19,11 @@ import Issues from '../components/Issues'
     implementing our wrapper around increment; the component doesn't care   */
 
 const mapDispatchToProps = {
-  changePage : (ev) => {
-    return changePage(1)
-  },
-  setRepo : (repo) => setRepo(repo),
-  setEndpoint : (endpoint) => setEndpoint(endpoint),
-  getIssues : (url) => getIssues(url),
-  issuesClear : () => issuesClear()
+  setRepo         : (repo) => setRepo(repo),
+  setEndpoint     : (endpoint) => setEndpoint(endpoint),
+  setCurrentIssue : (issueNumber) => setCurrentIssue(issueNumber),
+  getIssues       : (url) => getIssues(url),
+  issuesClear     : () => issuesClear()
 }
 
 const mapStateToProps = (state) => ({
