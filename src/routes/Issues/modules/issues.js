@@ -27,13 +27,6 @@ export function setEndpoint (value) {
   }
 }
 
-export function changePage (value = 1) {
-  return {
-    type    : ISSUES_CHANGE_PAGE,
-    payload : value
-  }
-}
-
 export function issuesClear () {
   return {
     type : ISSUES_CLEAR
@@ -44,7 +37,7 @@ export function issuesClear () {
     returns a function for lazy evaluation. It is incredibly useful for
     creating async actions, especially when combined with redux-thunk! */
 
-export const getInitialIssues = (url) => {
+export const getIssues = (url) => {
   return (dispatch, getState) => {
     dispatch({
       type : SET_LOADING,
@@ -53,12 +46,14 @@ export const getInitialIssues = (url) => {
     return Request
       .get(url)
       .end((err, res) => {
+        console.log(res)
         if (err) {
           throw new Error('An error occured loading the REST API:', err)
         } else {
           dispatch({
             type    : 'ISSUES_SET',
-            payload : res.body
+            payload : res.body,
+            paginationLinks   : res.links
           })
           dispatch({
             type : SET_LOADING,
@@ -72,8 +67,7 @@ export const getInitialIssues = (url) => {
 export const actions = {
   setRepo,
   setEndpoint,
-  changePage,
-  getInitialIssues
+  getIssues
 }
 
 // ------------------------------------
@@ -95,14 +89,10 @@ const ACTION_HANDLERS = {
       endpoint: action.payload
     })
   },
-  [ISSUES_CHANGE_PAGE] : (state, action) => {
-    return Object.assign({}, state, {
-      page: action.payload
-    })
-  },
   [ISSUES_SET] : (state, action) => {
     return Object.assign({}, state, {
-      data: action.payload
+      data: action.payload,
+      paginationLinks: action.paginationLinks
     })
   },
   [ISSUES_CLEAR] : (state, action) => {
@@ -117,10 +107,10 @@ const ACTION_HANDLERS = {
 // ------------------------------------
 const initialState = {
   loading: false,
-  page: 0,
   data: [],
+  paginationLinks: [],
   repo: {},
-  endpoint: ''
+  endpoint: {}
 }
 export default function issuesReducer (state = initialState, action) {
   const handler = ACTION_HANDLERS[action.type]
