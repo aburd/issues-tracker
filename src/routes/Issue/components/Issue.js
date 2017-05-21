@@ -15,12 +15,6 @@ class Issue extends Component {
     this.state = {}
   }
 
-  // makeDetailViewEndpoint (issuesEndpoint) {
-  //   let newIssuesEndpoint = new URL(issuesEndpoint.href)
-  //   const newPath = newIssuesEndpoint.path + '/' + this.
-  //   newIssuesEndpoint.set('path', )
-  // }
-
   componentWillMount () {
     /*
       Get and Set Initial data for any future usage in the component
@@ -70,8 +64,8 @@ class Issue extends Component {
           <Container className='issue-detail'>
             <Row>
               <Col>
-                <div className="text-center">
-                  <Button className='hidden-xs-down' onClick={browserHistory.goBack} color='secondary'>
+                <div className="button-container text-right">
+                  <Button size='sm' onClick={browserHistory.goBack} color='secondary' outline>
                     Go back
                   </Button>
                 </div>
@@ -107,6 +101,15 @@ class Issue extends Component {
                   className='body text-left'
                   source={body !== '' ? body : '*No description given*'}
                 />
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <div className="button-container text-center">
+                  <Button onClick={browserHistory.goBack} color='secondary' outline>
+                    Go back
+                  </Button>
+                </div>
               </Col>
             </Row>
           </Container>

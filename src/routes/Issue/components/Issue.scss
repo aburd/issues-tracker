@@ -1,6 +1,13 @@
 .issue-detail {
   text-align: left;
 
+  img {
+    width: 100%;
+  }
+  .button-container {
+    margin-bottom: 10px;
+  }
+
   .block-title {
     position: relative;
     font-size: 12px;
