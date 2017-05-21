@@ -24,7 +24,6 @@ const mapStateToProps = (state) => ({
   data          : state.issue.data,
   repo            : state.issue.repo,
   endpoint        : state.issue.endpoint
-  // issuesEndpoint: state.issues ? state.issues.endpoint : {}
 })
 
 /*  Note: mapStateToProps is where you should use `reselect` to create selectors, ie:

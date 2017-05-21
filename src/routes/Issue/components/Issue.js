@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { Container, Row, Col } from 'reactstrap'
+import { Container, Row, Col, Badge } from 'reactstrap'
 import ReactMarkdown from 'react-markdown'
 import moment from 'moment'
 import URL from 'url-parse'
@@ -58,7 +58,8 @@ class Issue extends Component {
         title,
         user,
         body,
-        created_at
+        created_at,
+        number
       } = data
       const createdAt = moment(created_at)
       if (loading || !title) {
@@ -69,9 +70,24 @@ class Issue extends Component {
             <Row>
               <Col>
                 <div className='title'>
-                  <strong>
-                    {title}
-                  </strong>
+                  <h5>{title} <Badge>#{number}</Badge></h5>
+                </div>
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <div className='block-title'>
+                  <div className='avatar'>
+                    <a href={user.url}>
+                      <img
+                        src={user.avatar_url}
+                        alt={`${user.login}'s github avatar'`}
+                      />
+                    </a>
+                  </div>
+                  <div className='time'>
+                    <strong>{user.login}</strong> opened this issue ({createdAt.fromNow()})
+                  </div>
                 </div>
               </Col>
             </Row>
@@ -79,24 +95,8 @@ class Issue extends Component {
               <Col>
                 <ReactMarkdown
                   className='body text-left'
-                  source={body}
+                  source={body !== '' ? body : '*No description given*'}
                 />
-              </Col>
-            </Row>
-            <Row>
-              <Col>
-                <strong>{user.login}</strong> <br />
-                <a href={user.url}>
-                  <img
-                    className='user-avatar'
-                    src={user.avatar_url}
-                    alt={`${user.login}'s github avatar'`}
-                  />
-                </a>
-              </Col>
-              <Col>
-                <strong>{createdAt.format('YYYY/MM/DD')}</strong> <br />
-                ({createdAt.fromNow()})
               </Col>
             </Row>
           </Container>

@@ -55,7 +55,6 @@ class Issues extends Component {
       paginationLinks,
       setCurrentIssue
     } = this.props
-    console.log('loading', loading)
 
     const renderIssues = () => {
       if (loading) {

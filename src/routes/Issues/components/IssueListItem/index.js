@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router'
 import PropTypes from 'prop-types'
+import { Badge } from 'reactstrap'
 import './IssueListItem.scss'
 
 export const IssueListItem = (props) => {
@@ -21,7 +22,9 @@ export const IssueListItem = (props) => {
       <div className='title'>
         <h5>{title}</h5>
       </div>
-      <div className='number'>#{number}</div>
+      <Badge>
+        <div className='number'>#{number}</div>
+      </Badge>
     </Link>
   )
 }
