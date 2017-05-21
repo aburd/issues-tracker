@@ -1,5 +1,7 @@
-// .pagination {
-//   .page-item {
-//     display: inline-flex;
-//   }
-// }
+.pagination {
+  max-width: 450px;
+  margin: 5px auto -2px;
+  .page-item {
+    flex: 1;
+  }
+}

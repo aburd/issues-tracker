@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { Container, Row, Col, Badge } from 'reactstrap'
+import { browserHistory } from 'react-router'
+import { Container, Row, Col, Badge, Button } from 'reactstrap'
 import ReactMarkdown from 'react-markdown'
 import moment from 'moment'
 import URL from 'url-parse'
@@ -67,6 +68,15 @@ class Issue extends Component {
       } else {
         return (
           <Container className='issue-detail'>
+            <Row>
+              <Col>
+                <div className="text-center">
+                  <Button className='hidden-xs-down' onClick={browserHistory.goBack} color='secondary'>
+                    Go back
+                  </Button>
+                </div>
+              </Col>
+            </Row>
             <Row>
               <Col>
                 <div className='title'>

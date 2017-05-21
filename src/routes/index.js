@@ -1,4 +1,5 @@
 // We only need to import the modules necessary for initial render
+import { browserHistory } from 'react-router'
 import CoreLayout from '../layouts/PageLayout/PageLayout'
 import Home from './Home'
 import CounterRoute from './Counter'
@@ -18,7 +19,8 @@ export const createRoutes = (store) => ({
     IssuesRoute(store),
     IssueRoute(store),
     FourZeroFour()
-  ]
+  ],
+  history: browserHistory
 })
 
 /*  Note: childRoutes can be chunked or otherwise loaded programmatically

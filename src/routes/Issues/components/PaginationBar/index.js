@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router'
+import { Pagination, PaginationItem } from 'reactstrap'
 import './PaginationBar.scss'
 
 const makePaginationBar = (props) => {
@@ -27,48 +28,52 @@ const makePaginationBar = (props) => {
   }
 
   return (
-    <ul className='pagination'>
+    <Pagination>
       {paginationLinks.first &&
-        <li>
+        <PaginationItem>
           <Link
+            className='page-link'
             to={{ pathname: location.pathname, query: { page: 1 } }}
             onClick={handlePaginationClick(paginationLinks.first)}
           >
             <span aria-hidden='true'>&laquo;</span>
           </Link>
-        </li>
+        </PaginationItem>
       }
       {paginationLinks.prev &&
-        <li>
+        <PaginationItem>
           <Link
+            className='page-link'
             to={{ pathname: location.pathname, query: { page: getPrev(currentPage) } }}
             onClick={handlePaginationClick(paginationLinks.prev)}
           >
             Prev
           </Link>
-        </li>
+        </PaginationItem>
       }
       {paginationLinks.next &&
-        <li>
+        <PaginationItem>
           <Link
+            className='page-link'
             to={{ pathname: location.pathname, query: { page: getNext(currentPage) } }}
             onClick={handlePaginationClick(paginationLinks.next)}
           >
             Next
           </Link>
-        </li>
+        </PaginationItem>
       }
       {paginationLinks.last &&
-        <li>
+        <PaginationItem>
           <Link
+            className='page-link'
             to={{ pathname: location.pathname, query: { page: parseInt(paginationLinks.last.match(/page=(\d+)/)[1]) } }}
             onClick={handlePaginationClick(paginationLinks.last)}
           >
             <span aria-hidden='true'>&raquo;</span>
           </Link>
-        </li>
+        </PaginationItem>
       }
-    </ul>
+    </Pagination>
   )
 }
 
